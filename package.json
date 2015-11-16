@@ -1,5 +1,7 @@
 {
   "author": "Nigel Foucha <nigel.foucha@petrocloud.com> (http://petrocloud.com)",
+  "contributors": ["Niall O'Higgins <niallo@beyondfog.com> (http://niallohiggins.com)"],
+  "license": "BSD",
   "name": "mercurane",
   "description": "Easy Node.JS  wrapper with support for SSH keys",
   "version": "0.3.2",

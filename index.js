@@ -79,7 +79,7 @@ function writeFiles(privKey, file, keyMode, cb) {
 }
 
 //
-// Run a command in a subprocess with GIT_SSH set to the correct value for
+// Run a command in a subprocess with --config ui.ssh set to the correct value for
 // SSH key.
 //
 // *baseDir* current working dir from which to execute git
@@ -130,7 +130,12 @@ function run(baseDir, privKey, cmd, keyMode, cb) {
       }
       this.file = file
       this.keyfile = keyfile
-      var proc = spawnFn(cmd, args, {cwd: baseDir, env: {HG_SSH: file, PATH:PATH}, detached: detached})
+      //Horrid hack to account for spawn not ignoring everything after "#"
+      if (args[args.length-1] !== '#') {
+          args.push("--config")
+          args.push('ui.ssh="' + file + '"')
+      }
+      var proc = spawnFn(cmd, args, {cwd: baseDir, env: {PATH:PATH}, detached: detached})
       proc.stdoutBuffer = ""
       proc.stderrBuffer = ""
       proc.stdout.setEncoding('utf8')

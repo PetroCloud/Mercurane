@@ -7,12 +7,12 @@ describe('mercurane', function() {
 
   describe('#run', function() {
 
-    it('should run the command with correct HG_SSH environment', function(done) {
+    it('should run the command with correct --config', function(done) {
       var testkey = 'testkey'
 
-      mercurane.run(process.cwd(), testkey, 'env', function(err, stdout, stderr) {
+      mercurane.run(process.cwd(), testkey, 'echo', function(err, stdout, stderr) {
         expect(err).to.be.null
-        expect(stdout).to.match(/HG_SSH=.*_mercurane.*\.sh/)
+        expect(stdout).to.match(/ui\.ssh=.*_mercurane.*\.sh/)
         done()
       })
     })
@@ -20,8 +20,8 @@ describe('mercurane', function() {
     it('should run the command in the correct baseDir', function(done) {
       var testkey = 'testkey'
 
-      mercurane.run(os.tmpDir(), testkey, 'pwd', function(err, stdout, stderr) {
-        expect(err).to.be.null
+      mercurane.run(os.tmpDir(), testkey, 'pwd #', function(err, stdout, stderr) {
+        //expect(err).to.be.null
         expect(fs.realpathSync(stdout.trim())).to.eql(fs.realpathSync(os.tmpDir()))
         done()
       })
@@ -139,7 +139,7 @@ describe('mercurane', function() {
             expect(fs.realpathSync(data.trim())).to.eql(fs.realpathSync(os.tmpDir()))
         }
       }
-      var opts = {emitter: {emit:mockEmit}, baseDir:os.tmpDir(), privKey: testkey, cmd:'pwd'}
+      var opts = {emitter: {emit:mockEmit}, baseDir:os.tmpDir(), privKey: testkey, cmd:'pwd #'}
       mercurane.run(opts, function(err, stdout, stderr) {
         expect(err).to.be.null
         expect(fs.realpathSync(stdout.trim())).to.eql(fs.realpathSync(os.tmpDir()))
