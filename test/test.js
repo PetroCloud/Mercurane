@@ -1,18 +1,18 @@
 var expect = require('chai').expect
 var fs = require('fs')
-var gitane = require('../index')
+var mercurane = require('../index')
 var os = require('os')
 
-describe('gitane', function() {
+describe('mercurane', function() {
 
   describe('#run', function() {
 
-    it('should run the command with correct GIT_SSH environment', function(done) {
+    it('should run the command with correct HG_SSH environment', function(done) {
       var testkey = 'testkey'
 
-      gitane.run(process.cwd(), testkey, 'env', function(err, stdout, stderr) {
+      mercurane.run(process.cwd(), testkey, 'env', function(err, stdout, stderr) {
         expect(err).to.be.null
-        expect(stdout).to.match(/GIT_SSH=.*_gitane.*\.sh/)
+        expect(stdout).to.match(/HG_SSH=.*_mercurane.*\.sh/)
         done()
       })
     })
@@ -20,7 +20,7 @@ describe('gitane', function() {
     it('should run the command in the correct baseDir', function(done) {
       var testkey = 'testkey'
 
-      gitane.run(os.tmpDir(), testkey, 'pwd', function(err, stdout, stderr) {
+      mercurane.run(os.tmpDir(), testkey, 'pwd', function(err, stdout, stderr) {
         expect(err).to.be.null
         expect(fs.realpathSync(stdout.trim())).to.eql(fs.realpathSync(os.tmpDir()))
         done()
@@ -28,7 +28,7 @@ describe('gitane', function() {
     })
 
     it('should correctly handle failed commands', function (done) {
-      gitane.run(os.tmpDir(), 'testkey', 'notarealcommand', function (err, stdout, stderr, exitCode) {
+      mercurane.run(os.tmpDir(), 'testkey', 'notarealcommand', function (err, stdout, stderr, exitCode) {
         expect(err).to.be.ok
         expect(exitCode).to.be.ok
         done()
@@ -41,10 +41,10 @@ describe('gitane', function() {
 
     it('should create a random file if none specified', function(done) {
 
-      gitane.writeFiles('testkey', null, function(err, file, keyfile) {
+      mercurane.writeFiles('testkey', null, function(err, file, keyfile) {
         expect(err).to.be.null
         expect(file).to.be.a('string')
-        expect(file).to.match(/_gitane/)
+        expect(file).to.match(/_mercurane/)
         var data = fs.readFileSync(file, 'utf8')
         expect(data).to.match(/exec ssh -i/)
 
@@ -61,7 +61,7 @@ describe('gitane', function() {
     it('should use passed-in file if specified', function(done) {
       var filename = "_testfile"
 
-      gitane.writeFiles('testkey', filename, function(err, file, keyfile) {
+      mercurane.writeFiles('testkey', filename, function(err, file, keyfile) {
         expect(file).to.eql(filename)
         expect(err).to.be.null
         var data = fs.readFileSync(file, 'utf8')
@@ -80,7 +80,7 @@ describe('gitane', function() {
     it('should create an executable script and an 0600-mode key by default', function(done) {
       var filename = "_testfile"
 
-      gitane.writeFiles('testkey', filename, function(err, file, keyfile) {
+      mercurane.writeFiles('testkey', filename, function(err, file, keyfile) {
         expect(file).to.eql(filename)
         expect(err).to.be.null
 
@@ -106,7 +106,7 @@ describe('gitane', function() {
     it('should create an executable script and honour keyMode param', function(done) {
       var filename = "_testfile"
 
-      gitane.writeFiles('testkey', filename, 0744, function(err, file, keyfile) {
+      mercurane.writeFiles('testkey', filename, 0744, function(err, file, keyfile) {
         expect(file).to.eql(filename)
         expect(err).to.be.null
 
@@ -140,7 +140,7 @@ describe('gitane', function() {
         }
       }
       var opts = {emitter: {emit:mockEmit}, baseDir:os.tmpDir(), privKey: testkey, cmd:'pwd'}
-      gitane.run(opts, function(err, stdout, stderr) {
+      mercurane.run(opts, function(err, stdout, stderr) {
         expect(err).to.be.null
         expect(fs.realpathSync(stdout.trim())).to.eql(fs.realpathSync(os.tmpDir()))
         expect(gotStdout).to.be.true

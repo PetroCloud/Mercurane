@@ -13,7 +13,7 @@ var SEPARATOR = isWindows ? ';' : ':';
 var emitter
 
 // Template string for wrapper script.
-var GIT_SSH_TEMPLATE = '#!/bin/sh\n' +
+var HG_SSH_TEMPLATE = '#!/bin/sh\n' +
 'exec ssh -i $key -o StrictHostKeyChecking=no "$@"\n'
 
 function mkTempFile(prefix, suffix) {
@@ -29,7 +29,7 @@ function mkTempFile(prefix, suffix) {
 }
 
 //
-// Write the Git script template to enable use of the SSH private key
+// Write the Hg script template to enable use of the SSH private key
 //
 // *privKey* SSH private key.
 // *file* (optional) filename of script.
@@ -39,7 +39,7 @@ function mkTempFile(prefix, suffix) {
 function writeFiles(privKey, file, keyMode, cb) {
   // No file name - generate a random one under the system temp dir
   if (!file) {
-    file = mkTempFile("_gitane", ".sh")
+    file = mkTempFile("_mercurane", ".sh")
   }
 
   if (typeof(keyMode) === 'function') {
@@ -47,13 +47,13 @@ function writeFiles(privKey, file, keyMode, cb) {
     keyMode = 0600
   }
 
-  var keyfile = mkTempFile("_gitaneid", ".key")
+  var keyfile = mkTempFile("_mercuraneid", ".key")
   var keyfileName = keyfile
   if (isWindows) {
     keyfileName = "\"" + keyfile.replace(/\\/g,"\\\\") + "\"";
   }
 
-  var data = GIT_SSH_TEMPLATE.replace('$key', keyfileName)
+  var data = HG_SSH_TEMPLATE.replace('$key', keyfileName)
   Step(
     function() {
       fs.writeFile(file, data, this.parallel())
@@ -130,7 +130,7 @@ function run(baseDir, privKey, cmd, keyMode, cb) {
       }
       this.file = file
       this.keyfile = keyfile
-      var proc = spawnFn(cmd, args, {cwd: baseDir, env: {GIT_SSH: file, PATH:PATH}, detached: detached})
+      var proc = spawnFn(cmd, args, {cwd: baseDir, env: {HG_SSH: file, PATH:PATH}, detached: detached})
       proc.stdoutBuffer = ""
       proc.stderrBuffer = ""
       proc.stdout.setEncoding('utf8')
@@ -179,7 +179,7 @@ function run(baseDir, privKey, cmd, keyMode, cb) {
 // convenience wrapper for clone. maybe add more later.
 //
 function clone(args, baseDir, privKey, cb) {
-  run(baseDir, privKey, "git clone " + args, cb)
+  run(baseDir, privKey, "hg clone " + args, cb)
 }
 
 function addPath(str) {

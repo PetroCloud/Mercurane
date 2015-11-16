@@ -1,9 +1,9 @@
 {
-  "author": "Niall O'Higgins <niallo@beyondfog.com> (http://niallohiggins.com)",
-  "name": "gitane",
-  "description": "Easy Node.JS Git wrapper with support for SSH keys",
+  "author": "Nigel Foucha <nigel.foucha@petrocloud.com> (http://petrocloud.com)",
+  "name": "mercurane",
+  "description": "Easy Node.JS  wrapper with support for SSH keys",
   "version": "0.3.2",
-  "homepage": "https://github.com/niallo/Gitane",
+  "homepage": "https://github.com/petrocloud/Mercurane",
   "keywords": [
     "git",
     "ssh",
@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/niallo/Gitane.git"
+    "url": "git://github.com/petrocloud/Mercurane.git"
   },
   "main": "index.js",
   "dependencies": {
