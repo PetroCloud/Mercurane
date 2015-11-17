@@ -7,7 +7,8 @@
   "version": "0.1.0",
   "homepage": "https://github.com/petrocloud/Mercurane",
   "keywords": [
-    "git",
+    "hg",
+    "mercurial",
     "ssh",
     "strider"
   ],
