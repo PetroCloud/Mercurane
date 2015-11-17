@@ -4,7 +4,7 @@
   "license": "BSD",
   "name": "mercurane",
   "description": "Easy Node.JS Hg wrapper with support for SSH keys",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/petrocloud/Mercurane",
   "keywords": [
     "hg",
